@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Modal.css";
+import "./index.css";
 
 const Modal = (props) => {
     const script = document.createElement('script');
@@ -41,7 +41,7 @@ const Modal = (props) => {
         });
     }
     window.myInitMap = myInitMap;
-    
+
     return (
         <React.Fragment>
             {!isSubmitClicked &&
@@ -52,32 +52,34 @@ const Modal = (props) => {
                             <div className="close" onClick={() => props.closeCLickHandler(false)}>&times;</div>
                         </div>
                         <div className="main-container">
-                            <div className="student-school">
-                                <label>School/Institute Name </label>
-                                <span>{props.schoolname}</span>
-                            </div>
-                            <h4>Student Details</h4>
                             <div className="sub-container">
                                 <div>
+                                    <div className="student-school">
+                                        <label>School/Institute Name </label>
+                                        <input type="text" value={props.schoolname} readOnly></input>
+                                    </div>
+                                    <h4>Student Details</h4>
                                     <div className="student-details">
                                         <div>
                                             <div>
-                                                <label>First Name</label>
-                                                <span>{props.studentfirstname}</span>
-                                            </div>
-                                            <div>
                                                 <label>Student passport size photo</label>
-                                                <img src={props.studentPhoto} className="student-photo" alt="student" ></img>
+                                                <div className="student-photo">
+                                                    <img src={props.studentPhoto} alt="student" ></img>
+                                                </div>
                                             </div>
                                         </div>
                                         <div>
                                             <div>
+                                                <label>First Name</label>
+                                                <input type="text" value={props.studentfirstname} readOnly></input>
+                                            </div>
+                                            <div>
                                                 <label>last name</label>
-                                                <span>{props.studentlastname}</span>
+                                                <input type="text" value={props.studentlastname} readOnly></input>
                                             </div>
                                             <div>
                                                 <label>class standards</label>
-                                                <span>{props.studentclass}</span>
+                                                <input type="text" value={props.studentclass} readOnly></input>
                                             </div>
                                         </div>
                                     </div>
@@ -86,45 +88,53 @@ const Modal = (props) => {
                                         <div>
                                             <div>
                                                 <label>first name</label>
-                                                <span>{props.parentfirstname}</span>
+                                                <input type="text" value={props.parentfirstname} readOnly></input>
                                             </div>
                                             <div>
                                                 <label>Mobile number</label>
-                                                <span>{props.parentmobilenumber}</span>
+                                                <input type="text" value={props.parentmobilenumber} readOnly></input>
                                             </div>
                                         </div>
                                         <div>
                                             <div>
                                                 <label>last name </label>
-                                                <span>{props.parentlastname}</span>
+                                                <input type="text" value={props.parentlastname} readOnly></input>
                                             </div>
                                             <div>
                                                 <label>Email Address</label>
-                                                <span>{props.parenteemailaddress}</span>
+                                                <input type="email" value={props.parenteemailaddress} readOnly></input>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div className="footer">
+                                        <div className="text">
+                                            <span>Need to Edit some details?</span><button onClick={() => props.closeCLickHandler(false)} className="back-button">Go Back</button>
+                                            <button onClick={DataSubmitHandler} className="submit-button" >Submit</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="address-details">
                                     <div>
                                         <label>Address</label>
-                                        <span>{props.address}</span>
+                                        {/* <input type="text" value={props.address} readOnly></input> */}
+                                        <div className="mystudent-address">{props.address}</div>
                                     </div>
                                     <br />
                                     {/* <div> */}
-                                        <div id="map-modal"></div>
+                                    <div id="map-modal"></div>
                                     {/* </div> */}
                                 </div>
                             </div>
                         </div>
                         {/* <br /> */}
+                        {/* <br />
                         <hr />
                         <div className="footer">
                             <div className="text">
                                 <span>Need to Edit some details?</span><button onClick={() => props.closeCLickHandler(false)} className="back-button">Go Back</button>
                                 <button onClick={DataSubmitHandler} className="submit-button" >Submit</button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             }

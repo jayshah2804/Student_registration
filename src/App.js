@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useState } from "react";
 import "./App.css";
 import little_image from "./Little Logo.png";
-import Modal from "./Modal/Modal";
+import Modal from "./ReviewPage";
 import { GoLocation } from "react-icons/go";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FiUpload } from "react-icons/fi";

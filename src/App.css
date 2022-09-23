@@ -35,7 +35,7 @@ body {
   text-align: center;
   flex: 7;
   border-bottom: 3px solid black;
-  border-image: linear-gradient(to right, red 25%, rgb(223, 188, 31) 25%, rgb(223, 188, 31) 50%, teal 50%, teal 75%, green 75%) 5;
+  border-image: linear-gradient(to right, rgba(217,34,41,255) 25%, rgba(235,188,31,255) 25%, rgba(235,188,31,255) 50%, teal 50%, teal 75%, green 75%) 5;
 }
 
 main {

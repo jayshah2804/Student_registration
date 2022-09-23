@@ -52,7 +52,7 @@ body {
 
 .modalBackground h4 {
   margin: 10px 0;
-  margin-top: 20px;
+  margin-top: 30px;
   text-transform: uppercase;
   position: relative;
 }
@@ -74,6 +74,8 @@ body {
 .modalBackground .student-photo {
   width: 100px;
   height: 100px;
+  object-fit: fill;
+  border-radius: 50%;
 }
 
 .modalBackground .sub-container {
@@ -101,7 +103,7 @@ body {
 #map-modal {
     /* height: 100%; */
     position: relative;
-    height: 350px;
+    height: 300px;
     width: 500px;
     margin-top: 10px;
     border-radius: 10px;

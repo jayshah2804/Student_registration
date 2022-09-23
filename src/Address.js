@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import React from "react";
 import "./Address.css";
 
@@ -46,7 +46,6 @@ const Address = (props) => {
             map: map,
             draggable: true,
             animation: window.google.maps.Animation.DROP,
-            // position: window.uluru,
             anchorPoint: new window.google.maps.Point(0, -29),
         });
 
@@ -54,12 +53,12 @@ const Address = (props) => {
             function (marker) {
                 geocoder.geocode({
                     latLng: marker.latLng
-                }, function (jay) {
-                    console.log(jay);
+                }, function (value) {
+                    // console.log(jay);
                     infowindowContent.children["place-address"].textContent =
-                        jay[0].formatted_address;
+                        value[0].formatted_address;
                     infowindowContent.children["place-name"].textContent = "";
-                    addressRef.current.value = jay[0].formatted_address;
+                    addressRef.current.value = value[0].formatted_address;
                     addressChangeHandler();
                 })
                 console.log(marker.formatted_address);

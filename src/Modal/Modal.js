@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Modal.css";
-import littleLogo from "../Little Logo.png";
 
 const Modal = (props) => {
     const script = document.createElement('script');
@@ -20,7 +19,6 @@ const Modal = (props) => {
     const DataSubmitHandler = () => {
         let element = document.getElementsByClassName("header")[0];
         element.scrollIntoView({ behavior: "smooth", block: "end" });
-        // console.log("here");
         setIsSubmitClicked(true);
     }
     const closeDataSavedClickHandler = () => {
@@ -39,10 +37,11 @@ const Modal = (props) => {
         let marker = new window.google.maps.Marker({
             position: { lat: props.lat, lng: props.lng },
             map,
-            title: 'Hello World!'
+            draggable: false
         });
     }
     window.myInitMap = myInitMap;
+    
     return (
         <React.Fragment>
             {!isSubmitClicked &&
@@ -112,14 +111,13 @@ const Modal = (props) => {
                                         <span>{props.address}</span>
                                     </div>
                                     <br />
-                                    <div>
-                                        {/* <img src={littleLogo} alt="dummy" /> */}
+                                    {/* <div> */}
                                         <div id="map-modal"></div>
-                                    </div>
+                                    {/* </div> */}
                                 </div>
                             </div>
                         </div>
-                        <br />
+                        {/* <br /> */}
                         <hr />
                         <div className="footer">
                             <div className="text">

@@ -48,7 +48,8 @@ input {
 }
 
 h4 {
-  margin: 13px 0;
+  /* margin: 10px 0; */
+  margin: 5px 0;
   letter-spacing: 0.5px;
   font-size: 17px;
 }

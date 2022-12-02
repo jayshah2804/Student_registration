@@ -1,24 +1,77 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
+import axios from "axios";
+import TickmarkImage from "../Tickmark.png";
+import ErrorImage from "../Error.png";
+import useHttp from "../use-http/use-http";
+var FormData = require('form-data');
 
+let flag = false;
+let croppedFile;
 const Modal = (props) => {
     const script = document.createElement('script');
     script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAq88vEj-mQ9idalgeP1IuvulowkkFA-Nk&callback=myInitMap&libraries=places&v=weekly";
     script.async = true;
     document.body.appendChild(script);
 
-    let myInt = setInterval(() => {
-        if (document.getElementsByClassName("gm-svpc")[1]) {
-            document.getElementsByClassName("gm-svpc")[1].style.display = "none";
-            document.getElementsByClassName("gm-control-active")[6].style.display = "none"
-            clearInterval(myInt);
-        }
-    })
-
     const [isSubmitClicked, setIsSubmitClicked] = useState(false);
+    const [apiResponse, setApiResponse] = useState("");
+
+    const authenticateUser = (data) => {
+        console.log(data);
+    };
+
+    const { isLoading, sendRequest } = useHttp();
+
+    useEffect(() => {
+        if (isSubmitClicked)
+            sendRequest({
+                url: "/api/v1/Staff/AddEditStaff",
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {
+                    corporateID: props.corpId,
+                    corporateName: props.corpName,
+                    staffFirstName: props.studentfirstname,
+                    staffLastName: props.studentlastname,
+                    classstandards: props.studentclass,
+                    staffImage: props.studentfirstname,
+                    parentFirstName: props.parentfirstname,
+                    parentLastName: props.parentlastname,
+                    parentsMobileNumber: props.parentmobilenumber,
+                    parentEmailAddress: props.parentemailaddress,
+                    address: props.address,
+                    pickupLL: props.lat + "," + props.lng,
+                    staffMobileNumber: "",
+                    emailID: "",
+                    pickupStop: props.pickupStop
+                }
+            }, authenticateUser);
+        console.log({
+            corporateID: props.corpId,
+            corporateName: props.corpName,
+            staffFirstName: props.studentfirstname,
+            staffLastName: props.studentlastname,
+            classstandards: props.studentclass,
+            staffImage: props.studentPhoto,
+            parentFirstName: props.parentfirstname,
+            parentLastName: props.parentlastname,
+            parentsMobileNumber: props.parentmobilenumber,
+            parentEmailAddress: props.parentemailaddress,
+            address: props.address,
+            pickupLL: props.lat + "," + props.lng,
+            staffMobileNumber: "",
+            emailID: "",
+            pickupStop: props.pickupStop
+        });
+    }, [sendRequest, isSubmitClicked]);
+
     const DataSubmitHandler = () => {
         let element = document.getElementsByClassName("header")[0];
         element.scrollIntoView({ behavior: "smooth", block: "end" });
+        flag = true;
         setIsSubmitClicked(true);
     }
     const closeDataSavedClickHandler = () => {
@@ -106,6 +159,12 @@ const Modal = (props) => {
                                             </div>
                                         </div>
                                     </div>
+                                    <h4>Address Details</h4>
+                                    <div className="parent-details">
+                                        <div>
+                                            <input style={{width: "600px"}} type="text" value={props.address} readOnly></input>
+                                        </div>
+                                    </div>
                                     <div className="footer">
                                         <div className="text">
                                             <span>Need to Edit some details?</span><button onClick={() => props.closeCLickHandler(false)} className="back-button">Go Back</button>
@@ -115,9 +174,9 @@ const Modal = (props) => {
                                 </div>
                                 <div className="address-details">
                                     <div>
-                                        <label>Address</label>
+                                        <label>Bus Pickup Stop</label>
                                         {/* <input type="text" value={props.address} readOnly></input> */}
-                                        <div className="mystudent-address">{props.address}</div>
+                                        <div className="mystudent-address">{props.pickupStop}</div>
                                     </div>
                                     <br />
                                     {/* <div> */}
@@ -126,23 +185,36 @@ const Modal = (props) => {
                                 </div>
                             </div>
                         </div>
-                        {/* <br /> */}
-                        {/* <br />
-                        <hr />
-                        <div className="footer">
-                            <div className="text">
-                                <span>Need to Edit some details?</span><button onClick={() => props.closeCLickHandler(false)} className="back-button">Go Back</button>
-                                <button onClick={DataSubmitHandler} className="submit-button" >Submit</button>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             }
             {
-                isSubmitClicked &&
+                apiResponse === "Success" &&
                 <div className="container-success-msg">
-                    <div className="success-msg">
-                        <p className="data-save">Data Saved Successfully <span className="x-button" onClick={closeDataSavedClickHandler}>X</span></p>
+                    <div className="success-sub-container">
+                        <div className="success-msg">
+                            <img src={TickmarkImage} />
+                            <p className="data-save">Your data has been successfully saved</p>
+                        </div>
+                        <hr />
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "10px" }}>
+                            <button onClick={closeDataSavedClickHandler}>OK</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            {
+                apiResponse === "Error" &&
+                <div className="container-success-msg">
+                    <div className="success-sub-container">
+                        <div className="success-msg">
+                            <img src={ErrorImage} />
+                            <p className="data-save">Some Error Occured</p>
+                        </div>
+                        <hr />
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "10px" }}>
+                            <button onClick={closeDataSavedClickHandler} className="error">OK</button>
+                        </div>
                     </div>
                 </div>
             }

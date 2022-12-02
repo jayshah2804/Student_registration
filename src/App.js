@@ -28,13 +28,13 @@ const defaultState = {
 let img;
 let img_placeHolder = "Only Upload Jpg/Png/Jpeg";
 let valid = false;
-let instituteName;
 let studentAddress;
 let myLat;
 let myLng;
+let originalFile;
+let corpName = new URLSearchParams(window.location.search).get('name');
+let corpId = new URLSearchParams(window.location.search).get('corpId');
 function App() {
-  instituteName = window.location.pathname.split("/");
-  instituteName = instituteName[1].replaceAll("%20"," ");
   const formRef = useRef();
   const schoolNameRef = useRef();
   const studentFirstNameRef = useRef();
@@ -45,7 +45,7 @@ function App() {
   const parentLastNameRef = useRef();
   const parentMobileNumberRef = useRef();
   const parentEmailRef = useRef();
-  // const addressRef = useRef();
+  const addressRef = useRef();
 
   const cropperRef = useRef(null);
 
@@ -87,8 +87,10 @@ function App() {
     let studentPhotoPath = studentPhotoRef.current.value;
     if (studentPhotoPath.includes("jpg") || studentPhotoPath.includes("jpeg") || studentPhotoPath.includes("png")) {
       valid = true;
+      // console.log(e.target.files.file.size);
       setError(prev => ({ ...prev, studentPhotoError: "" }));
       const [file] = e.target.files;
+      originalFile = file;
       img = URL.createObjectURL(file);
       let imageName = studentPhotoPath.split("fakepath");
       img_placeHolder = imageName[1].split("\\");
@@ -128,14 +130,14 @@ function App() {
     }
   }
 
-  // const addressChangeHandler = () => {
-  //   if (addressRef.current.value) {
-  //     valid = true;
-  //     setError(prev => ({ ...prev, addressError: "" }));
-  //   }
-  // }
+  const addressChangeHandler = () => {
+    if (addressRef.current.value) {
+      valid = true;
+      setError(prev => ({ ...prev, addressError: "" }));
+    }
+  }
 
-  const resetClickHandler = () => { 
+  const resetClickHandler = () => {
     valid = false;
     formRef.current.reset();
     img_placeHolder = "Only Upload Jpg/Png/Jpeg";
@@ -143,11 +145,11 @@ function App() {
   }
 
   const getAddress = useCallback((addressValue, lat, lng) => {
-    console.log("data",addressValue, lat, lng);
+    // console.log("data",addressValue, lat, lng);
     myLat = lat;
     myLng = lng;
     studentAddress = addressValue;
-  },[]);
+  }, []);
 
   const submitCLickHandler = (event) => {
     let studentPhotoPath = studentPhotoRef.current.value;
@@ -156,6 +158,10 @@ function App() {
     if (!schoolNameRef.current.value) {
       valid = false;
       setError(prev => ({ ...prev, schoolNameError: "Please select School/Institute name" }));
+    }
+    if (!addressRef.current.value) {
+      valid = false;
+      setError(prev => ({ ...prev, addressError: "Please Enter Valid Address" }));
     }
     if (!(/^[a-zA-Z ]{1,15}$/.test(studentFirstNameRef.current.value))) {
       valid = false;
@@ -193,10 +199,6 @@ function App() {
       valid = false;
       setError(prev => ({ ...prev, parentEmailError: "Please Enter Valid Email" }));
     }
-    // if (!addressRef.current.value) {
-    //   valid = false;
-    //   setError(prev => ({ ...prev, addressError: "Please Enter Valid Address" }));
-    // }
     if (valid) {
       schoolNameRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
       setFormIsValid(true);
@@ -229,7 +231,7 @@ function App() {
             />
             <div className="imageCrop-footer">
               <div className="sub-footer">
-                <span className="text">Resultant Image:</span> <img src={val} className="image" alt="cropped" />
+                <span className="text">Resultant Image:</span> <img id="asd" src={val} className="image" alt="cropped" />
               </div>
               <button onClick={submitCLicked} className="imageCrop-submit">Submit</button>
             </div>
@@ -242,7 +244,7 @@ function App() {
         <p className="student-header">STUDENT REGISTRATION</p>
       </div>
       <br />
-      <br />
+      {/* <br /> */}
       <form ref={formRef} onSubmit={submitCLickHandler} autoComplete="off" >
         <main>
           <div className="normal-data">
@@ -250,7 +252,7 @@ function App() {
               <h4 className="sub-header-title">school / institute details</h4>
               <label htmlFor="school-details" className="required">school / institute name</label>
               <br />
-              <input type="text" readOnly value={instituteName} ref={schoolNameRef} className="tags" />
+              <input type="text" readOnly value={corpName} ref={schoolNameRef} className="tags" />
               {/* <div style={{ position: "relative" }}>
                 <RiArrowDropDownLine className="dropdown-icon" />
                 <select id="school-details" className="tags" ref={schoolNameRef} onChange={schoolChangeHandler} >
@@ -325,15 +327,14 @@ function App() {
                 </div>
               </div>
             </div>
+            <div className="address-details">
+              <h4 className="sub-header-title">Address Details</h4>
+              <input style={{width: "685px", marginTop: "15px"}} type="text" id="address" className="tags" ref={addressRef} onChange={addressChangeHandler} placeholder="Enter Address" maxLength="100" />
+              {error.addressError && <p className="error">{error.addressError}</p>}
+            </div>
           </div>
           <div className="location-data">
             <Address addressEntered={getAddress} />
-            {/* <label htmlFor="address" className="required">Address</label>
-            <div className="location">
-              <input type="text" id="address" className="tags address" ref={addressRef} onChange={addressChangeHandler} placeholder="Enter Students Address" maxLength="200" />
-              <GoLocation className="location-icon" />
-            </div>
-            {error.addressError && <p className="error">{error.addressError}</p>} */}
           </div>
         </main>
         <input type="submit" value="Submit" className="submit button" />
@@ -344,7 +345,8 @@ function App() {
           <p>&#169; <span className="year">2022</span> <span className="lFirst">L</span ><span className="i">i</span><span className="tFirst">t</span><span className="tSecond">t</span><span className="lSecond">l</span><span className="e">e</span></p>
         </div>
       </div>
-      {formIsValid && <Modal lat={myLat} lng={myLng} address={studentAddress} studentPhoto={val} schoolname={schoolNameRef.current.value} studentfirstname={studentFirstNameRef.current.value} studentlastname={studentLastNameRef.current.value} studentclass={studentClassRef.current.value} parentfirstname={parentFirstNameRef.current.value} parentlastname={parentLastNameRef.current.value} parentmobilenumber={parentMobileNumberRef.current.value} parenteemailaddress={parentEmailRef.current.value} closeCLickHandler={setFormIsValid} />}
+      {/* {console.log("val",img)} */}
+      {formIsValid && <Modal corpId={corpId} corpName={corpName} myOriginalFile={val} lat={myLat} lng={myLng} address={addressRef.current.value} pickupStop={studentAddress} studentPhoto={val} schoolname={schoolNameRef.current.value} studentfirstname={studentFirstNameRef.current.value} studentlastname={studentLastNameRef.current.value} studentclass={studentClassRef.current.value} parentfirstname={parentFirstNameRef.current.value} parentlastname={parentLastNameRef.current.value} parentmobilenumber={parentMobileNumberRef.current.value} parentemailaddress={parentEmailRef.current.value} closeCLickHandler={setFormIsValid} />}
     </React.Fragment>
   );
 }

@@ -125,7 +125,7 @@ body {
 #map-modal {
     /* height: 100%; */
     position: relative;
-    height: 390px;
+    height: 430px;
     width: 500px;
     margin-top: 10px;
     border-radius: 10px;
@@ -157,7 +157,7 @@ body {
   margin: 15px 5px;
 }
 
-.address-details input{
+.address-details input {
   width: 500px;
   /* width: 510px; */
   /* height: 450px; */
@@ -269,6 +269,14 @@ body {
   .modalBackground .student-photo {
     justify-content: flex-start;
   }
+
+  .container-success-msg {
+    background-color: white;
+  }
+
+  .success-sub-container {
+    border: 1px solid black;
+  }
 }
 
 @keyframes slideInFromLeft {
@@ -280,22 +288,61 @@ body {
   }
 }
 
-.success-msg {
+.error-msg {
   width: 100%;
   top: 0;
   left: 0;
   right: 0;
-  background-color: rgba(33, 233, 10, 0.5);
+  background-color: rgb(219 0 0 / 59%);
   text-align: center;
   /* position: absolute; */
   padding: 15px;
-} 
+}
 
 .container-success-msg {
   width: 100vw;
   height: 100vh;
   z-index: 9999;
   position: absolute;
+  background-color: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 0;
   left: 0;
+}
+
+.success-sub-container {
+  padding-top: 20px;
+  background-color: white;
+  border-radius: 10px;
+  width: 400px;
+  height: 220px;
+}
+
+.success-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.success-msg img {
+  width: 70px;
+  height: 70px;
+}
+
+.success-sub-container button {
+  background-color: rgba(47,175,75,255);
+  border: rgba(47,175,75,255);
+  color: white;
+  padding: 7px 40px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.success-sub-container .error {
+  background-color: rgba(217,34,41,255);
+  border: rgba(217,34,41,255);
 }

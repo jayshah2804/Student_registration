@@ -26,7 +26,7 @@ const Address = (props) => {
             zoom: 11,
             mapTypeControl: false,
         });
-        console.log(map);
+        // console.log(map);
         var input = document.getElementById("pac-input");
         // var options = {
         //     fields: ["formatted_address", "geometry", "name"],
@@ -35,9 +35,7 @@ const Address = (props) => {
         // };
         var autocomplete = new window.google.maps.places.Autocomplete(input);
         var geocoder = new window.google.maps.Geocoder();
-        // Bind the map's bounds (viewport) property to the autocomplete object,
-        // so that the autocomplete requests use the current map bounds for the
-        // bounds option in the request.
+        
         autocomplete.bindTo("bounds", map);
         var infowindow = new window.google.maps.InfoWindow();
         var infowindowContent = document.getElementById("infowindow-content");
@@ -109,7 +107,7 @@ const Address = (props) => {
 
     return (
         <div>
-            <label htmlFor="address" className="required">Address</label>
+            <label htmlFor="address" className="required">Bus Pickup Stop</label>
             <div id="pac-container">
                 <input id="pac-input" type="text" ref={addressRef} placeholder="Enter a location" className="tags address" onBlur={addressChangeHandler} />
             </div>
